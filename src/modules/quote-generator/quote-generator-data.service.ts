@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { QuoteModel, QuotesModel } from './data-models/QuoteModel';
+import { QuotesModel } from './data-models/QuoteModel';
 import { promises as fs } from 'fs';
 
-// this services is needed to have an abstraction above the source of data
+// this service is needed to have an abstraction above the source of data
 // now we have JSON, later one it can be a real database
 
 @Injectable()
@@ -17,13 +17,12 @@ export class QuoteGeneratorDataService {
 
     this.dataRead = true;
     const jsonStr = await fs.readFile('./src/data/office_quotes.json', 'utf-8');
-    console.log(`QuoteGeneratorDataService:initializeData#`, jsonStr);
     this.quotes = JSON.parse(jsonStr) as QuotesModel;
   }
 
-  async getRandomQuote(): Promise<QuoteModel> {
+  async getQuotes(): Promise<QuotesModel> {
     await this.initializeData();
 
-    return this.quotes[Math.floor(Math.random() * this.quotes.length)];
+    return this.quotes;
   }
 }
